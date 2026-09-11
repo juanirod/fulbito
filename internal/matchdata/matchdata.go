@@ -105,8 +105,10 @@ type TimelineRow struct {
 	Away   []string
 }
 
+// ESPN's stoppage-time format has an apostrophe after both halves (e.g.
+// "90'+8'"), not just at the end, so both must be stripped before splitting.
 func parseClockOrder(display string) int {
-	display = strings.TrimSuffix(display, "'")
+	display = strings.ReplaceAll(display, "'", "")
 	base, extra := display, ""
 	if i := strings.Index(display, "+"); i >= 0 {
 		base, extra = display[:i], display[i+1:]

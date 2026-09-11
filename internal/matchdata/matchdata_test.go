@@ -178,6 +178,23 @@ func TestBuildTimeline(t *testing.T) {
 		}
 	})
 
+	t.Run("orders real ESPN stoppage-time format (apostrophe after both halves) above regular time", func(t *testing.T) {
+		details := []espn.Detail{
+			{Type: espn.DetailType{Text: "Red Card"}, Clock: espn.DetailClock{DisplayValue: "90'"}, RedCard: true, Team: espn.DetailTeam{ID: homeID}},
+			{Type: espn.DetailType{Text: "Yellow Card"}, Clock: espn.DetailClock{DisplayValue: "90'+6'"}, YellowCard: true, Team: espn.DetailTeam{ID: awayID}},
+			{Type: espn.DetailType{Text: "Yellow Card"}, Clock: espn.DetailClock{DisplayValue: "90'+8'"}, YellowCard: true, Team: espn.DetailTeam{ID: homeID}},
+		}
+
+		rows := BuildTimeline(details, homeID, awayID)
+
+		want := []string{"90'+8'", "90'+6'", "90'"}
+		for i, w := range want {
+			if rows[i].Minute != w {
+				t.Errorf("position %d: expected %q, got %q (full order: %v)", i, w, rows[i].Minute, rows)
+			}
+		}
+	})
+
 	t.Run("goal with assist renders scorer and assist on the same side", func(t *testing.T) {
 		details := []espn.Detail{
 			{
