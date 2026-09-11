@@ -1,6 +1,6 @@
 # fulbito
 
-A terminal app for live soccer scores, powered by ESPN's public scoreboard API. Browse matches from several leagues in a lazygit-style TUI, or query them straight from a script.
+A terminal app for live soccer scores, powered by ESPN's public scoreboard API. Browse matches from several leagues in a TUI, or query them straight from a script.
 
 ## Install
 
